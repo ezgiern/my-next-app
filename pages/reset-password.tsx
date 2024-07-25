@@ -1,26 +1,26 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import Link from "next/link";
-import { Router, useRouter } from "next/router";
-import forgotPassword from "./forgotPassword";
+import { useRouter } from "next/router";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-
+const ResetPassword = () => {
   const router = useRouter();
+  const [message, setMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
-  const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const handleUpdatePassword = async () => {
+    if (newPassword !== password) {
+      setMessage("Passwords do not match");
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+
     if (error) {
-      setMessage(error.message);
+      setMessage("There was an error updating your password.");
     } else {
-      setMessage("Login successful!");
-      router.push(`/calendar`);
+      setMessage("Password updated successfully!");
+      router.push("/login");
     }
   };
 
@@ -39,59 +39,63 @@ export default function Login() {
           </p>
         </div>
         <div className="w-1/2 p-8">
-          <h2 className="text-2xl font-bold mb-6">
-            Posteffect.io'ya hoşgeldin!
+          <h2 className="text-2xl font-bold mb-6">Şifreni Sıfırla</h2>
+          <h2 className="text-xl font-light mb-6 ">
+            Şifreni hatırlıyor musun?
+            <a href="/login" className="underline text-red-500 ml-2">
+              GİRİŞ
+            </a>
           </h2>
+
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              E-posta
-            </label>
-            <input
-              type="email"
-              placeholder="E-posta"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Şifre
+              Yeni Şifre
             </label>
             <input
               type="password"
-              placeholder="Şifre"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Şifreni Doğrula
+            </label>
+            <input
+              type="password"
+              placeholder="Confirm Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             />
           </div>
-          <div className="mt-4 flex items-center">
-            <input type="checkbox" className="mr-2" />
-            <span className="text-sm">Gerçek kişi olduğunuzu doğrulayın</span>
-          </div>
+
           <button
-            onClick={handleLogin}
+            onClick={handleUpdatePassword}
             className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md"
           >
-            Devam Et
+            Oluştur
           </button>
           <div className="mt-4 text-sm text-center">
-            <a href="/forgotPassword" className="text-blue-500">
-              Şifremi unuttum?
-            </a>
-          </div>
-          <div className="mt-4 text-sm text-center">
-            Hesabınız yok mu?{" "}
-            <a href="/signup" className="text-blue-500">
-              Şimdi Kayıt ol!
-            </a>
-          </div>
-          <div className="mt-4 text-sm text-center">
-            {message && <p className="text-red-500">{message}</p>}
+            {message && (
+              <p
+                className={`mt-4 text-sm text-center ${
+                  message === "Password updated successfully!"
+                    ? "text-green-500"
+                    : "text-red-500"
+                }`}
+              >
+                {message}
+              </p>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ResetPassword;

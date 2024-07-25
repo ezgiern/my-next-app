@@ -1,11 +1,11 @@
 // pages/createPost.tsx
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import { usePostStore } from "../store/store";
 
 const CreatePost = () => {
-  const [selectedAccount, setSelectedAccount] = useState("");
-  const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const { content, setContent, account, setAccount } = usePostStore(); // Use Zustand store
   const router = useRouter();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,6 @@ const CreatePost = () => {
       <div className="flex flex-row">
         <h2 className="text-l font-semibold mb-2 pl-4">Yeni Gönderi Oluştur</h2>
         <h2 className="text-l font-semibold pl-20">Adım 1/3</h2>
-
         <h2 className="text-l font-semibold pl-20">Gönderi Detayları</h2>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -39,8 +38,8 @@ const CreatePost = () => {
           </label>
           <select
             id="account"
-            value={selectedAccount}
-            onChange={(e) => setSelectedAccount(e.target.value)}
+            value={account}
+            onChange={(e) => setAccount(e.target.value)} // Use Zustand store
             className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
             <option value="" disabled>
@@ -59,19 +58,15 @@ const CreatePost = () => {
               Tüm Kanallara Uygula
             </button>
           </div>
-
-          <div className="border border-gray-300 mt-6 ">
-            <label
-              htmlFor="file"
-              className="text-sm font-medium text-gray-700 "
-            >
+          <div className="border border-gray-300 mt-6">
+            <label htmlFor="file" className="text-sm font-medium text-gray-700">
               Resim veya Video Ekle
             </label>
             <input
               id="file"
               type="file"
               onChange={handleFileChange}
-              className="bg-white rounded-md text-gray-500 font-semibold h-40 flex flex-col items-center  cursor-pointer border-2 border-gray-300 border-dashed mx-auto font-[sans-serif]"
+              className="bg-white rounded-md text-gray-500 font-semibold h-40 flex flex-col items-center cursor-pointer border-2 border-gray-300 border-dashed mx-auto font-[sans-serif]"
             />
             <label
               htmlFor="content"
@@ -82,7 +77,7 @@ const CreatePost = () => {
             <textarea
               id="content"
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={(e) => setContent(e.target.value)} // Use Zustand store
               rows={4}
               className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
