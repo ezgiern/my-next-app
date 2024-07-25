@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { User } from '@supabase/supabase-js';
+import { nextTick } from 'process';
 
 export default function AuthStatus() {
   const [user, setUser] = useState<User | null>(null);
@@ -38,3 +39,4 @@ export default function AuthStatus() {
     </div>
   );
 }
+
