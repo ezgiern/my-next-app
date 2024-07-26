@@ -1,7 +1,7 @@
 // pages/createPost.tsx
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { usePostStore } from "../store/store";
+import { usePostStore } from "../../store/store";
 
 const CreatePost = () => {
   const [file, setFile] = useState<File | null>(null);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { create } from "zustand";
-import { usePostStore } from "../store/store";
+import { usePostStore } from "../../store/store";
 
 const Card = () => {
   const { content, account } = usePostStore(); // Use Zustand store

@@ -1,24 +1,26 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewTask] = useState("");
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
   const fetchTasks = async () => {
-    const { data, error } = await supabase.from('tasks').select('*');
-    if (error) console.error('Error fetching tasks:', error);
+    const { data, error } = await supabase.from("tasks").select("*");
+    if (error) console.error("Error fetching tasks:", error);
     else setTasks(data);
   };
 
   const addTask = async () => {
     const user = supabase.auth.user();
-    const { error } = await supabase.from('tasks').insert([{ name: newTask, user_id: user.id }]);
-    if (error) console.error('Error adding task:', error);
+    const { error } = await supabase
+      .from("tasks")
+      .insert([{ name: newTask, user_id: user.id }]);
+    if (error) console.error("Error adding task:", error);
     else fetchTasks();
   };
 
@@ -33,7 +35,7 @@ export default function Tasks() {
       />
       <button onClick={addTask}>Add Task</button>
       <ul>
-        {tasks.map(task => (
+        {tasks.map((task) => (
           <li key={task.id}>{task.name}</li>
         ))}
       </ul>

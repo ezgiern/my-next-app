@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
-import forgotPassword from "./forgotPassword";
+import forgotPassword from "../forgotPassword/page";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ export default function Login() {
       setMessage(error.message);
     } else {
       setMessage("Login successful!");
-      router.push(`/calendar`);
+      router.push(`/calendar/page`);
     }
   };
 
@@ -28,11 +28,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white shadow-lg rounded-lg flex max-w-4xl">
         <div className="w-1/2 p-8 bg-blue-100 flex flex-col justify-center items-center">
-          <img
-            src="image.png"
-            alt="Description"
-            className="w-3/4 h-auto object-contain"
-          />
+          <img src="/image.png" className="w-3/4 h-auto object-contain" />
           <h1 className="text-3xl font-bold text-center mb-4">Posteffect.io</h1>
           <p className="text-center mb-6">
             Sosyal medya yönetimini kolaylaştırın!
@@ -83,7 +79,7 @@ export default function Login() {
           </div>
           <div className="mt-4 text-sm text-center">
             Hesabınız yok mu?{" "}
-            <a href="/signup" className="text-blue-500">
+            <a href="/signup/page" className="text-blue-500">
               Şimdi Kayıt ol!
             </a>
           </div>

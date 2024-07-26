@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Modal } from "./modal";
+import { Modal } from "../../components/modal";
 
 const Calendar = () => {
   const [view, setView] = useState<"monthly" | "weekly">("monthly");
@@ -122,7 +122,7 @@ const Calendar = () => {
   )} - ${endDate.toLocaleDateString("tr-TR")}`;
 
   const handleAddPost = (date: Date) => {
-    router.push(`/createPost?date=${date.toISOString().split("T")[0]}`);
+    router.push(`/createPost/page?date=${date.toISOString().split("T")[0]}`);
   };
 
   return (

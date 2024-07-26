@@ -1,21 +1,25 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
-import { User } from '@supabase/supabase-js';
-import { nextTick } from 'process';
+import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { User } from "@supabase/supabase-js";
+import { nextTick } from "process";
 
 export default function AuthStatus() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       setUser(session?.user ?? null);
     };
     getSession();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-    });
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+      }
+    );
 
     return () => {
       authListener?.subscription.unsubscribe();
@@ -39,4 +43,3 @@ export default function AuthStatus() {
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CreatePost from "./createPost";
-import Card from "./card";
+import CreatePost from "../pages/createPost/page";
+import Card from "../pages/card/page";
 
 export const Modal = () => {
   const [showModal, setShowModal] = useState(false);

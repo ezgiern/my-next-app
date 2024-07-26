@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
 
@@ -10,7 +10,7 @@ const forgotPassword = () => {
 
   const handleChangePassword = async () => {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "/resetPassword",
+      redirectTo: "/reset-password/page",
     });
 
     if (error) {
@@ -38,7 +38,7 @@ const forgotPassword = () => {
           <h2 className="text-2xl font-bold mb-6">Şifreni Sıfırla</h2>
           <h2 className="text-xl font-light mb-6 ">
             Şifreni hatırlıyor musun?
-            <a href="/login" className="underline text-red-500 ml-2">
+            <a href="/login/page" className="underline text-red-500 ml-2">
               GİRİŞ
             </a>
           </h2>

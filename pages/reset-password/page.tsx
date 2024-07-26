@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/router";
 
 const ResetPassword = () => {
@@ -20,7 +20,7 @@ const ResetPassword = () => {
       setMessage("There was an error updating your password.");
     } else {
       setMessage("Password updated successfully!");
-      router.push("/login");
+      router.push("/login/page");
     }
   };
 
@@ -29,7 +29,7 @@ const ResetPassword = () => {
       <div className="bg-white shadow-lg rounded-lg flex max-w-4xl">
         <div className="w-1/2 p-8 bg-blue-100 flex flex-col justify-center items-center">
           <img
-            src="image.png"
+            src="/image.png"
             alt="Description"
             className="w-3/4 h-auto object-contain"
           />
@@ -42,7 +42,7 @@ const ResetPassword = () => {
           <h2 className="text-2xl font-bold mb-6">Şifreni Sıfırla</h2>
           <h2 className="text-xl font-light mb-6 ">
             Şifreni hatırlıyor musun?
-            <a href="/login" className="underline text-red-500 ml-2">
+            <a href="/login/page" className="underline text-red-500 ml-2">
               GİRİŞ
             </a>
           </h2>
