@@ -129,12 +129,14 @@ const Calendar = () => {
     <div className="flex h-screen bg-gray-100">
       <aside className="w-64 bg-white shadow-md relative h-fit">
         <div className="p-4">
+          <title>Posteffect</title>
           <Image
-            src="/pp.jpg"
+            src="/pp.png"
             alt="Avatar"
             className="w-24 h-24 ml-12"
-            width={64}
-            height={64}
+            width={54}
+            height={54}
+            loading="eager"
           />
           <h2 className="mt-2 text-lg font-semibold">erenezgi40@gmail.com</h2>
           <p className="text-sm text-gray-600">Hesap Sahibi</p>
@@ -205,7 +207,7 @@ const Calendar = () => {
             {view === "monthly" ? (
               <>
                 <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-2 py-1 bg-[#0000FF] text-[#FFFFFF] rounded-md hover:bg-blue-600"
                   onClick={handlePrevMonth}
                 >
                   &lt;
@@ -214,7 +216,7 @@ const Calendar = () => {
                   {monthName} {currentStartDate.getFullYear()}
                 </h1>
                 <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-2 py-1 bg-[#0000FF] text-[#FFFFFF] rounded-md hover:bg-blue-600"
                   onClick={handleNextMonth}
                 >
                   &gt;
@@ -223,14 +225,14 @@ const Calendar = () => {
             ) : (
               <>
                 <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-2 py-1 bg-[#0000FF] text-[#FFFFFF] rounded-md hover:bg-blue-600"
                   onClick={handlePrevWeek}
                 >
                   &lt;
                 </button>
                 <h1 className="mx-4 text-2xl font-semibold">{weekRange}</h1>
                 <button
-                  className="px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-2 py-1 bg-[#0000FF] text-[#FFFFFF] rounded-md hover:bg-blue-600"
                   onClick={handleNextWeek}
                 >
                   &gt;
@@ -242,8 +244,8 @@ const Calendar = () => {
             <button
               className={`px-4 py-2 rounded-md ${
                 view === "weekly"
-                  ? "bg-blue-600 text-white"
-                  : "bg-blue-500 text-white"
+                  ? "bg-[#0000FF] text-[#FFFFFF]"
+                  : "bg-[#0000FF] text-[#FFFFFF]"
               } hover:bg-blue-700`}
               onClick={() => setView("weekly")}
             >
@@ -252,8 +254,8 @@ const Calendar = () => {
             <button
               className={`ml-2 px-4 py-2 rounded-md ${
                 view === "monthly"
-                  ? "bg-blue-600 text-white"
-                  : "bg-blue-500 text-white"
+                  ? "bg-[#0000FF] text-[#FFFFFF]"
+                  : "bg-[#0000FF] text-[#FFFFFF]"
               } hover:bg-blue-700`}
               onClick={() => setView("monthly")}
             >
@@ -277,7 +279,7 @@ const Calendar = () => {
               >
                 {date !== null && (
                   <>
-                    <span className="text-xs text-gray-500 absolute top-1 left-1">
+                    <span className="text-xs text-gray-900 absolute top-1 left-1">
                       {date}
                     </span>
                     {new Date(
@@ -285,20 +287,23 @@ const Calendar = () => {
                       currentStartDate.getMonth(),
                       date
                     ) >= new Date() && (
-                      <button
-                        className="absolute bottom-1 right-1 px-1 py-1 bg-blue-500 text-white rounded-full text-sm"
-                        onClick={() =>
-                          handleAddPost(
-                            new Date(
-                              currentStartDate.getFullYear(),
-                              currentStartDate.getMonth(),
-                              date
+                      <>
+                        <button
+                          className="absolute bottom-1 right-1 px-1 py-1 bg-[#0000FF] text-[#FFFFFF] rounded-full text-sm"
+                          onClick={() =>
+                            handleAddPost(
+                              new Date(
+                                currentStartDate.getFullYear(),
+                                currentStartDate.getMonth(),
+                                date
+                              )
                             )
-                          )
-                        }
-                      >
-                        +
-                      </button>
+                          }
+                        >
+                          +
+                        </button>
+                        <Modal />
+                      </>
                     )}
                   </>
                 )}

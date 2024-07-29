@@ -21,7 +21,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="max-w-xl p-2" aria-hidden="true">
+    <div className="max-w-xl p-2 mt-3 ml-1" aria-hidden="true">
       <div className="flex flex-row">
         <h2 className="text-l font-semibold mb-2 pl-4">Yeni Gönderi Oluştur</h2>
         <h2 className="text-l font-semibold pl-20">Adım 1/3</h2>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import Image from "next/image"; // Import the Image component
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ export default function SignUp() {
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white shadow-lg rounded-lg flex max-w-4xl">
         <div className="w-1/2 p-8 bg-blue-100 flex flex-col justify-center items-center">
-          <img
+          <Image
             src="/image.png"
             alt="Description"
             className="w-3/4 h-auto object-contain"
@@ -37,7 +38,7 @@ export default function SignUp() {
         </div>
         <div className="w-1/2 p-8">
           <h2 className="text-2xl font-bold mb-6">
-            Posteffect.io'ya hoşgeldin!
+            Posteffect.io&apos;ya hoşgeldin!
           </h2>
           <div>
             <label className="block text-sm font-medium text-gray-700">

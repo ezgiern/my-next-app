@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import Link from "next/link";
-import { Router, useRouter } from "next/router";
-import forgotPassword from "../forgotPassword/page";
+import { useRouter } from "next/router";
+import Image from "next/image"; // Import the Image component
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,7 +28,13 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white shadow-lg rounded-lg flex max-w-4xl">
         <div className="w-1/2 p-8 bg-blue-100 flex flex-col justify-center items-center">
-          <img src="/image.png" className="w-3/4 h-auto object-contain" />
+          <Image
+            src="/image.png"
+            alt="Description"
+            width={200}
+            height={200}
+            className="w-3/4 h-auto object-contain"
+          />
           <h1 className="text-3xl font-bold text-center mb-4">Posteffect.io</h1>
           <p className="text-center mb-6">
             Sosyal medya yönetimini kolaylaştırın!
@@ -36,7 +42,7 @@ export default function Login() {
         </div>
         <div className="w-1/2 p-8">
           <h2 className="text-2xl font-bold mb-6">
-            Posteffect.io'ya hoşgeldin!
+            Posteffect.io&apos;ya hoşgeldin!
           </h2>
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -73,15 +79,15 @@ export default function Login() {
             Devam Et
           </button>
           <div className="mt-4 text-sm text-center">
-            <a href="/forgotPassword" className="text-blue-500">
+            <Link href="/forgotPassword/page" className="text-blue-500">
               Şifremi unuttum?
-            </a>
+            </Link>
           </div>
           <div className="mt-4 text-sm text-center">
             Hesabınız yok mu?{" "}
-            <a href="/signup/page" className="text-blue-500">
+            <Link href="/signup/page" className="text-blue-500">
               Şimdi Kayıt ol!
-            </a>
+            </Link>
           </div>
           <div className="mt-4 text-sm text-center">
             {message && <p className="text-red-500">{message}</p>}

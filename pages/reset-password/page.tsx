@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Image from "next/image"; // Import the Image component
 
 const ResetPassword = () => {
   const router = useRouter();
@@ -28,9 +30,11 @@ const ResetPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-blue-50">
       <div className="bg-white shadow-lg rounded-lg flex max-w-4xl">
         <div className="w-1/2 p-8 bg-blue-100 flex flex-col justify-center items-center">
-          <img
+          <Image
             src="/image.png"
             alt="Description"
+            width={200}
+            height={200}
             className="w-3/4 h-auto object-contain"
           />
           <h1 className="text-3xl font-bold text-center mb-4">Posteffect.io</h1>
@@ -42,9 +46,9 @@ const ResetPassword = () => {
           <h2 className="text-2xl font-bold mb-6">Şifreni Sıfırla</h2>
           <h2 className="text-xl font-light mb-6 ">
             Şifreni hatırlıyor musun?
-            <a href="/login/page" className="underline text-red-500 ml-2">
+            <Link href="/login/page" className="underline text-red-500 ml-2">
               GİRİŞ
-            </a>
+            </Link>
           </h2>
 
           <div>
