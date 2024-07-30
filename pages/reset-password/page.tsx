@@ -3,6 +3,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image"; // Import the Image component
+export const runtime = "edge";
 
 const ResetPassword = () => {
   const router = useRouter();
