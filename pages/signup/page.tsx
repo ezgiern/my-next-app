@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import Image from "next/image"; // Import the Image component
-export const runtime = "edge";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
