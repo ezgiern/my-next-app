@@ -1,26 +1,59 @@
-import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import Link from "next/link";
+"use client";
+
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image"; // Import the Image component
+import Image from "next/image";
+import Link from "next/link";
+import { auth } from "../../firebase/functions/src";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+declare global {
+  interface Window {
+    grecaptcha: any;
+  }
+}
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const router = useRouter();
 
+  useEffect(() => {
+    // reCAPTCHA API'sinin yüklendiğinden emin olun
+    const interval = setInterval(() => {
+      if (window.grecaptcha) {
+        window.grecaptcha.ready(() => {
+          window.grecaptcha.render("recaptcha-container", {
+            sitekey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string,
+            callback: (token: string) => {
+              setRecaptchaToken(token);
+            },
+          });
+        });
+        clearInterval(interval);
+      }
+    }, 1000); // Her 1 saniyede bir kontrol et
+  }, []);
+
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      setMessage(error.message);
-    } else {
-      setMessage("Login successful!");
+    if (!recaptchaToken) {
+      setMessage("Lütfen reCAPTCHA doğrulamasını tamamlayın.");
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setMessage("Giriş başarılı!");
       router.push(`/calendar/page`);
+    } catch (error: any) {
+      setMessage(error.message);
     }
   };
 
@@ -68,10 +101,7 @@ export default function Login() {
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             />
           </div>
-          <div className="mt-4 flex items-center">
-            <input type="checkbox" className="mr-2" />
-            <span className="text-sm">Gerçek kişi olduğunuzu doğrulayın</span>
-          </div>
+          <div id="recaptcha-container" className="mt-4"></div>
           <button
             onClick={handleLogin}
             className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md"

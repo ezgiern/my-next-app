@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../firebase/functions/src"; // Firebase yapılandırmanızı buradan import edin
 import Link from "next/link";
 import Image from "next/image"; // Import the Image component
 
@@ -8,14 +11,13 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState("");
 
   const handleChangePassword = async () => {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "/reset-password/page",
-    });
-
-    if (error) {
-      setMessage(error.message);
-    } else {
+    try {
+      await sendPasswordResetEmail(auth, email, {
+        url: `${window.location.origin}/login/page`,
+      });
       setMessage("Lütfen e-postanızı kontrol edin.");
+    } catch (error: any) {
+      setMessage(error.message);
     }
   };
 

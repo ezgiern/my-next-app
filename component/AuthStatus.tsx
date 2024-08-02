@@ -1,32 +1,21 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-import { User } from "@supabase/supabase-js";
+import { User } from "firebase/auth";
+import { auth } from "../firebase/functions/src";
 
 export default function AuthStatus() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const getSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-    };
-    getSession();
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => {
-      authListener?.subscription.unsubscribe();
-    };
+    // Cleanup: onAuthStateChanged dinleyicisini kaldırmak için unsubscribe fonksiyonunu çağırıyoruz
+    return () => unsubscribe();
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await auth.signOut(); // Firebase ile oturum kapatma
   };
 
   return (
