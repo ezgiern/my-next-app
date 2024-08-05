@@ -1,9 +1,12 @@
-// pages/createPost.tsx
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { usePostStore } from "../../store/store";
 
-const CreatePost = () => {
+interface CreatePostProps {
+  language: "tr" | "en"; // Dil durumu için prop ekliyoruz
+}
+
+const CreatePost: React.FC<CreatePostProps> = ({ language }) => {
   const [file, setFile] = useState<File | null>(null);
   const { content, setContent, account, setAccount } = usePostStore(); // Use Zustand store
   const router = useRouter();
@@ -23,9 +26,15 @@ const CreatePost = () => {
   return (
     <div className="max-w-xl p-2 mt-3 ml-1" aria-hidden="true">
       <div className="flex flex-row">
-        <h2 className="text-l font-semibold mb-2 pl-4">Yeni Gönderi Oluştur</h2>
-        <h2 className="text-l font-semibold pl-20">Adım 1/3</h2>
-        <h2 className="text-l font-semibold pl-20">Gönderi Detayları</h2>
+        <h2 className="text-l font-semibold mb-2 pl-4">
+          {language === "tr" ? "Yeni Gönderi Oluştur" : "Create New Post"}
+        </h2>
+        <h2 className="text-l font-semibold pl-20">
+          {language === "tr" ? "Adım 1/3" : "Step 1/3"}
+        </h2>
+        <h2 className="text-l font-semibold pl-20">
+          {language === "tr" ? "Gönderi Detayları" : "Post Details"}
+        </h2>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Hesabını Seç */}
@@ -34,7 +43,7 @@ const CreatePost = () => {
             htmlFor="account"
             className="block text-sm font-medium text-gray-700"
           >
-            Hesabını Seç
+            {language === "tr" ? "Hesabını Seç" : "Select Your Account"}
           </label>
           <select
             id="account"
@@ -43,24 +52,38 @@ const CreatePost = () => {
             className="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           >
             <option value="" disabled>
-              Bir hesap seçin
+              {language === "tr"
+                ? "Bir hesap seçin"
+                : "Please select an account"}
             </option>
-            <option value="account1">Hesap 1</option>
-            <option value="account2">Hesap 2</option>
-            <option value="account3">Hesap 3</option>
+            <option value="account1">
+              {language === "tr" ? "Hesap 1" : "Account 1"}
+            </option>
+            <option value="account2">
+              {language === "tr" ? "Hesap 2" : "Account 2"}
+            </option>
+            <option value="account3">
+              {language === "tr" ? "Hesap 3" : "Account 3"}
+            </option>
           </select>
           <div className="flex flex-row mt-2">
-            <h2 className="text-l font-light pr-28">İçerik Detayları</h2>
+            <h2 className="text-l font-light pr-28">
+              {language === "tr" ? "İçerik Detayları" : "Content Details"}
+            </h2>
             <button
               type="button"
               className="mt-2 px-1 py-1 bg-green-500 text-white  rounded-2xl ml-28"
             >
-              Tüm Kanallara Uygula
+              {language === "tr"
+                ? "Tüm Kanallara Uygula"
+                : "Apply to All Channels"}
             </button>
           </div>
           <div className="border border-gray-300 mt-6">
             <label htmlFor="file" className="text-sm font-medium text-gray-700">
-              Resim veya Video Ekle
+              {language === "tr"
+                ? "Resim veya Video Ekle"
+                : "Add Image or Video"}
             </label>
             <input
               id="file"
@@ -72,7 +95,9 @@ const CreatePost = () => {
               htmlFor="content"
               className="block text-sm font-medium text-gray-700"
             >
-              İçerik Metnini Buraya Yaz
+              {language === "tr"
+                ? "İçerik Metnini Buraya Yaz"
+                : "Write Content Here"}
             </label>
             <textarea
               id="content"
@@ -86,13 +111,13 @@ const CreatePost = () => {
             type="button"
             className="px-4 py-2 mt-2 ml-28 bg-yellow-500 text-white rounded-md hover:bg-gray-600"
           >
-            Taslaklara Kaydet
+            {language === "tr" ? "Taslaklara Kaydet" : "Save as Draft"}
           </button>
           <button
             type="submit"
             className="px-4 float-right mt-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           >
-            Devam Et
+            {language === "tr" ? "Devam Et" : "Continue"}
           </button>
         </div>
       </form>

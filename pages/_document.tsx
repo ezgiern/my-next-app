@@ -11,7 +11,6 @@ export default function Document() {
           async
           defer
         ></script>
-        ;
       </Head>
       <body>
         <Main />

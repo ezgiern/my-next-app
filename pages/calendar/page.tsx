@@ -1,4 +1,3 @@
-// pages/calendar.tsx
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +6,8 @@ import { Modal } from "../../components/modal";
 
 const Calendar = () => {
   const [view, setView] = useState<"monthly" | "weekly">("monthly");
+  const [language, setLanguage] = useState<"tr" | "en">("tr"); // Dil durumu
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false); // Dil dropdown durumu
   const [currentStartDate, setCurrentStartDate] = useState(() => {
     const today = new Date();
     const firstDayOfWeek = today.getDate() - today.getDay() + 1; // Pazartesi
@@ -14,7 +15,10 @@ const Calendar = () => {
   });
   const router = useRouter();
 
-  const days = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cts", "Paz"];
+  const days =
+    language === "tr"
+      ? ["Pzt", "Sal", "Çar", "Per", "Cum", "Cts", "Paz"]
+      : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const hours = [
     "00:00",
     "01:00",
@@ -97,20 +101,36 @@ const Calendar = () => {
   const currentMonthDates = generateMonthlyDates(currentStartDate);
   const weeklyDates = generateWeeklyDates(currentStartDate);
 
-  const monthNames = [
-    "Ocak",
-    "Şubat",
-    "Mart",
-    "Nisan",
-    "Mayıs",
-    "Haziran",
-    "Temmuz",
-    "Ağustos",
-    "Eylül",
-    "Ekim",
-    "Kasım",
-    "Aralık",
-  ];
+  const monthNames =
+    language === "tr"
+      ? [
+          "Ocak",
+          "Şubat",
+          "Mart",
+          "Nisan",
+          "Mayıs",
+          "Haziran",
+          "Temmuz",
+          "Ağustos",
+          "Eylül",
+          "Ekim",
+          "Kasım",
+          "Aralık",
+        ]
+      : [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
   const monthName = monthNames[currentStartDate.getMonth()];
 
   const startDate = new Date(currentStartDate);
@@ -118,18 +138,30 @@ const Calendar = () => {
   endDate.setDate(endDate.getDate() + 6); // End of week
 
   const weekRange = `${startDate.toLocaleDateString(
-    "tr-TR"
-  )} - ${endDate.toLocaleDateString("tr-TR")}`;
+    language === "tr" ? "tr-TR" : "en-US"
+  )} - ${endDate.toLocaleDateString(language === "tr" ? "tr-TR" : "en-US")}`;
 
   const handleAddPost = (date: Date) => {
     router.push(`/createPost/page?date=${date.toISOString().split("T")[0]}`);
+  };
+
+  const handleLanguageChange = (lang: "tr" | "en") => {
+    setLanguage(lang); // Dil durumunu güncelle
+    setIsLanguageDropdownOpen(false); // Dropdown'u kapat
+  };
+
+  const handleLogout = () => {
+    // Oturum bilgisini temizleme (örneğin localStorage'dan)
+    localStorage.removeItem("userToken"); // Örnek oturum verisi
+
+    // Ana sayfaya yönlendirme
+    router.push("/login/page");
   };
 
   return (
     <div className="flex h-screen bg-gray-100">
       <aside className="w-64 bg-white shadow-md relative h-fit">
         <div className="p-4">
-          <title>Posteffect</title>
           <Image
             src="/pp.png"
             alt="Avatar"
@@ -139,69 +171,115 @@ const Calendar = () => {
             loading="eager"
           />
           <h2 className="mt-2 text-lg font-semibold">erenezgi40@gmail.com</h2>
-          <p className="text-sm text-gray-600">Hesap Sahibi</p>
+          <p className="text-sm text-gray-600">
+            {language === "tr" ? "Hesap Sahibi" : "Account Owner"}
+          </p>
         </div>
         <nav className="mt-8">
           <Link href="/" className="block p-4 text-gray-800 hover:bg-gray-200">
-            Ana Sayfa
+            {language === "tr" ? "Ana Sayfa" : "Home"}
           </Link>
           <Link
-            href="/addAccount"
+            href="/addAccount/page"
             className="block p-4 text-gray-800 hover:bg-gray-200"
           >
-            Hesap Ekle
+            {language === "tr" ? "Hesap Ekle" : "Add Account"}
           </Link>
           <Link
             href="/create"
             className="block p-4 text-gray-800 hover:bg-gray-200"
           >
-            Oluştur
+            {language === "tr" ? "Oluştur" : "Create"}
           </Link>
           <Link
             href="/calendar"
-            className="block p-4 text-gray-800 hover:bg-gray-200 bg-gray-200"
+            className="block p-4 text-gray-800 hover:bg-gray-200 "
           >
-            Takvim
+            {language === "tr" ? "Takvim" : "Calendar"}
           </Link>
           <Link
             href="/membership"
             className="block p-4 text-gray-800 hover:bg-gray-200"
           >
-            Üyelik
+            {language === "tr" ? "Üyelik" : "Membership"}
           </Link>
           <Link
             href="/settings"
             className="block p-4 text-gray-800 hover:bg-gray-200"
           >
-            Ayarlar
+            {language === "tr" ? "Ayarlar" : "Settings"}
           </Link>
-          <Link
-            href="/language"
-            className="block p-4 text-gray-800 hover:bg-gray-200"
-          >
-            Dil
-          </Link>
+          <div className="block p-4 text-gray-800 hover:bg-gray-200 relative">
+            <button
+              id="dropdownMenuIconButton"
+              onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+              className="inline-flex items-center text-center "
+              type="button"
+            >
+              <span>{language === "tr" ? "Dil" : "Language"}</span>
+              <svg
+                className="w-5 h-5 ml-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 4 15"
+              >
+                <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+              </svg>
+            </button>
+
+            {isLanguageDropdownOpen && (
+              <div
+                id="dropdownDots"
+                className="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 right-0 mt-2"
+              >
+                <ul
+                  className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownMenuIconButton"
+                >
+                  <li>
+                    <a
+                      href="#"
+                      onClick={() => handleLanguageChange("tr")}
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      Türkçe
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      onClick={() => handleLanguageChange("en")}
+                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >
+                      English
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
           <Link
             href="/systemStatus"
             className="block p-4 text-gray-800 hover:bg-gray-200"
           >
-            Sistem Durumu
+            {language === "tr" ? "Sistem Durumu" : "System Status"}
           </Link>
           <Link
             href="/privacy"
             className="block p-4 text-gray-800 hover:bg-gray-200"
           >
-            Gizlilik
+            {language === "tr" ? "Gizlilik" : "Privacy"}
           </Link>
-          <Link
-            href="/logout"
-            className="block p-4 text-gray-800 hover:bg-gray-200"
+          <button
+            onClick={handleLogout}
+            className="block p-4 text-gray-800 hover:bg-gray-200 w-full text-left"
           >
-            Çıkış yap
-          </Link>
+            {language === "tr" ? "Çıkış yap" : "Logout"}
+          </button>
         </nav>
       </aside>
-      <main className="flex-1  p-8">
+      <main className="flex-1 p-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
             {view === "monthly" ? (
@@ -249,7 +327,7 @@ const Calendar = () => {
               } hover:bg-blue-700`}
               onClick={() => setView("weekly")}
             >
-              Haftalık
+              {language === "tr" ? "Haftalık" : "Weekly"}
             </button>
             <button
               className={`ml-2 px-4 py-2 rounded-md ${
@@ -259,7 +337,7 @@ const Calendar = () => {
               } hover:bg-blue-700`}
               onClick={() => setView("monthly")}
             >
-              Aylık
+              {language === "tr" ? "Aylık" : "Monthly"}
             </button>
           </div>
         </div>
@@ -302,7 +380,8 @@ const Calendar = () => {
                         >
                           +
                         </button>
-                        <Modal />
+                        <Modal language={language} />{" "}
+                        {/* Modal'a dil geçildi */}
                       </>
                     )}
                   </>
@@ -330,7 +409,8 @@ const Calendar = () => {
                   >
                     {date >= new Date() && (
                       <>
-                        <Modal />
+                        <Modal language={language} />{" "}
+                        {/* Modal'a dil geçildi */}
                       </>
                     )}
                   </div>
